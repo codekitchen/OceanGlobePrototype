@@ -5,6 +5,7 @@ using UnityEngine;
 public class WaveSystem {
   [System.Serializable]
   public struct Wave {
+    public bool enabled;
     public float wavelength;
     public float amplitude;
     public float speed;
@@ -22,6 +23,8 @@ public class WaveSystem {
   public Vector3 WaveOffset(Vector2 position) {
     Vector3 offset = Vector3.zero;
     foreach (Wave wave in waves) {
+      if (!wave.enabled)
+        continue;
       float freq = TwoPI / wave.wavelength;
       float phase = wave.speed * freq;
       float steepness = wave.steepness / (freq * wave.amplitude * waves.Count);

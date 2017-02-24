@@ -14,12 +14,12 @@ OcclusionCullingSettings:
 RenderSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 7
-  m_Fog: 0
-  m_FogColor: {r: 0.5, g: 0.5, b: 0.5, a: 1}
-  m_FogMode: 3
+  m_Fog: 1
+  m_FogColor: {r: 0.29803923, g: 0.1882353, b: 0.2627451, a: 0}
+  m_FogMode: 1
   m_FogDensity: 0.01
-  m_LinearFogStart: 0
-  m_LinearFogEnd: 300
+  m_LinearFogStart: 26
+  m_LinearFogEnd: 30
   m_AmbientSkyColor: {r: 0.89705884, g: 0.89705884, b: 0.89705884, a: 1}
   m_AmbientEquatorColor: {r: 0.114, g: 0.125, b: 0.133, a: 1}
   m_AmbientGroundColor: {r: 0.047, g: 0.043, b: 0.035, a: 1}
@@ -91,6 +91,48 @@ NavMeshSettings:
     cellSize: 0.16666667
     accuratePlacement: 0
   m_NavMeshData: {fileID: 0}
+--- !u!1001 &568964855
+Prefab:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 4195635839241084, guid: e27aa814437d04f1cb68d679e3c41b66, type: 2}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4195635839241084, guid: e27aa814437d04f1cb68d679e3c41b66, type: 2}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4195635839241084, guid: e27aa814437d04f1cb68d679e3c41b66, type: 2}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4195635839241084, guid: e27aa814437d04f1cb68d679e3c41b66, type: 2}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4195635839241084, guid: e27aa814437d04f1cb68d679e3c41b66, type: 2}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4195635839241084, guid: e27aa814437d04f1cb68d679e3c41b66, type: 2}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4195635839241084, guid: e27aa814437d04f1cb68d679e3c41b66, type: 2}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4195635839241084, guid: e27aa814437d04f1cb68d679e3c41b66, type: 2}
+      propertyPath: m_RootOrder
+      value: 3
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_ParentPrefab: {fileID: 100100000, guid: e27aa814437d04f1cb68d679e3c41b66, type: 2}
+  m_IsPrefabParent: 0
 --- !u!1 &945701855
 GameObject:
   m_ObjectHideFlags: 0
@@ -120,10 +162,25 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   size: 30
   pixels: 20
-  moveSpeed: 0.2
+  moveSpeed: 6
   position: {x: 0, y: 0}
+  waves:
+    waves:
+    - enabled: 1
+      wavelength: 20
+      amplitude: 0.75
+      speed: 6
+      angle: 300
+      steepness: 0.2
+    - enabled: 0
+      wavelength: 20
+      amplitude: 0.25
+      speed: 14
+      angle: 38
+      steepness: 0.274
   pixelPrefab: {fileID: 4335830042963386, guid: c44682d099b68451eb85bacb133cb6d6,
     type: 2}
+  boat: {fileID: 1954412033}
 --- !u!4 &945701857
 Transform:
   m_ObjectHideFlags: 0
@@ -194,7 +251,7 @@ Camera:
     width: 1
     height: 1
   near clip plane: 0.3
-  far clip plane: 1000
+  far clip plane: 29.5
   field of view: 60
   orthographic: 0
   orthographic size: 5
@@ -287,3 +344,22 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 50, y: -30, z: 0}
+--- !u!1 &1954412032 stripped
+GameObject:
+  m_PrefabParentObject: {fileID: 1416225282665674, guid: e27aa814437d04f1cb68d679e3c41b66,
+    type: 2}
+  m_PrefabInternal: {fileID: 568964855}
+--- !u!114 &1954412033
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1954412032}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 66ebda64cb64648a3b9142238b0d702e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  map: {fileID: 945701856}
+  mapPos: {x: 0, y: 0}
+  moveSpeed: 4
