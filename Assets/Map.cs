@@ -58,13 +58,11 @@ public class Map : MonoBehaviour {
         else if (tile == Tile.Ground)
           tileOffset.z += .25f;
 
-        pixel.position = BasePos(x + tileOffset.x, y + tileOffset.y, tileOffset.z);
-        pixel.LookAt(pixel.position * 2, Vector3.right);
-        pixel.Rotate(Vector3.right, 90);
+        Position(pixel, new Vector3(x, y, 0), tileOffset);
 
-				if (gridToMap(new Vector2(x, y)) == Vector2.zero)
+        if (gridToMap(new Vector2(x, y)) == Vector2.zero)
           pixel.gameObject.SetActive(false);
-					else
+        else
           pixel.gameObject.SetActive(true);
       }
     }
@@ -73,9 +71,7 @@ public class Map : MonoBehaviour {
       Vector2 pos = mapToGrid(boat.mapPos);
       var bt = boat.transform;
       var boatOffset = offset + waves.WaveOffset(boat.mapPos);
-      bt.position = BasePos(pos.x + boatOffset.x, pos.y + boatOffset.y, boatOffset.z);
-      bt.LookAt(bt.position * 2, Vector3.right);
-      bt.Rotate(Vector3.right, 90);
+      Position(bt, pos, boatOffset);
       if (boat.mapPos.x - position.x > allowedOffset) {
         position.x = boat.mapPos.x - allowedOffset;
       }
@@ -152,18 +148,28 @@ public class Map : MonoBehaviour {
 
   float circlePadding = Mathf.PI / 7;
 
-  Vector3 BasePos(float x, float y, float z = 0f) {
+	void Position(Transform obj, Vector3 gridCords, Vector3 offset) {
+    gridCords += offset;
     // we extend the range on the right/top a bit, to compensate for the fact that
     // the "pixels" disappear sooner on that side as they scroll.
-    float xr = (x + 1) / (float)(pixels);
-    float yr = (y + 1) / (float)(pixels);
+    float xr = (gridCords.x + 1) / (float)(pixels);
+    float yr = (gridCords.y + 1) / (float)(pixels);
     float lon = circlePadding + (Mathf.PI - 2 * circlePadding) * xr;
     float lat = circlePadding + (Mathf.PI - 2 * circlePadding) * yr - (Mathf.PI / 2);
-    float radius = z + size / 2f;
+    float radius = gridCords.z + size / 2f;
     float xp = radius * Mathf.Cos(lat) * Mathf.Cos(lon + Mathf.PI);
     float yp = radius * Mathf.Cos(lat) * Mathf.Sin(lon);
     float zp = radius * Mathf.Sin(lat);
-    return new Vector3(xp, yp, zp);
+    obj.position = new Vector3(xp, yp, zp);
+		// eesh
+		// This is to rotate the sprite so that "up" is directly out of the circle (perpendicular to the surface),
+		// but "right" is always aligned with the positive x axis (but still tangent to the circle's surface), so
+		// that non-round sprites aren't pointing in random directions.
+		// my trig-fu is weak, this took like 30 minutes.
+    var norm = obj.position.normalized;
+    var localRight = Quaternion.Euler(0, 0, Mathf.Rad2Deg * (Mathf.PI / 2 - lon)) * Vector3.right + obj.position;
+    obj.LookAt(localRight, obj.position + norm);
+    obj.Rotate(0, 270, 0);
   }
 
   void CreateGrid() {
@@ -176,8 +182,8 @@ public class Map : MonoBehaviour {
 
     for (int y = 0; y < pixels; ++y) {
       for (int x = 0; x < pixels; ++x) {
-        var pos = BasePos(x, y);
-        var pixel = Instantiate(pixelPrefab, pos, Quaternion.identity, gridObject);
+        var pixel = Instantiate(pixelPrefab, Vector3.zero, Quaternion.identity, gridObject);
+        Position(pixel, new Vector3(x, y, 0), Vector3.zero);
         this[x, y] = pixel;
       }
     }

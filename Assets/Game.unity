@@ -20,7 +20,7 @@ RenderSettings:
   m_FogDensity: 0.01
   m_LinearFogStart: 25
   m_LinearFogEnd: 29
-  m_AmbientSkyColor: {r: 0.89705884, g: 0.89705884, b: 0.89705884, a: 1}
+  m_AmbientSkyColor: {r: 0.8235294, g: 0.8235294, b: 0.8235294, a: 1}
   m_AmbientEquatorColor: {r: 0.114, g: 0.125, b: 0.133, a: 1}
   m_AmbientGroundColor: {r: 0.047, g: 0.043, b: 0.035, a: 1}
   m_AmbientIntensity: 1
@@ -135,6 +135,11 @@ Prefab:
       propertyPath: map
       value: 
       objectReference: {fileID: 945701856}
+    - target: {fileID: 212647494697497890, guid: e27aa814437d04f1cb68d679e3c41b66,
+        type: 2}
+      propertyPath: m_SortingLayerID
+      value: -1509211767
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: e27aa814437d04f1cb68d679e3c41b66, type: 2}
   m_IsPrefabParent: 0
