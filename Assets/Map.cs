@@ -32,13 +32,17 @@ public class Map : MonoBehaviour {
     position.x += Input.GetAxisRaw("Horizontal") * moveSpeed * Time.deltaTime;
     position.y += Input.GetAxisRaw("Vertical") * moveSpeed * Time.deltaTime;
 
-    Vector3 offset = new Vector3(position.x - Mathf.Floor(position.x), 0, position.y - Mathf.Floor(position.y)) * -stride;
+    Vector3 offset = -(new Vector3(position.x - Mathf.Floor(position.x), 0, position.y - Mathf.Floor(position.y)));
     for (int y = 0; y < pixels; ++y) {
       for (int x = 0; x < pixels; ++x) {
         var pixel = grid[y, x];
         var waveMotion = waves.WaveOffset(gridToWorld(new Vector2(x, y)));
         waveMotion = Vector3.zero;
-        pixel.position = BasePos(x, y) + offset + waveMotion;
+        pixel.position = BasePos(x + offset.x, y + offset.z) + waveMotion;
+				if (gridToWorld(new Vector2(x, y)) == new Vector2(2, 1))
+          pixel.gameObject.SetActive(false);
+					else
+          pixel.gameObject.SetActive(true);
       }
     }
   }
@@ -56,10 +60,18 @@ public class Map : MonoBehaviour {
 
   float stride { get { return size / (float)(pixels - 1); } }
 
-  Vector3 BasePos(int x, int y) {
-    float yp = -(size / 2) + y * stride;
-    float xp = -(size / 2) + x * stride;
-    return new Vector3(xp, 0, yp);
+  float circlePadding = Mathf.PI / 6;
+
+  Vector3 BasePos(float x, float y) {
+    float xr = x / (float)(pixels - 2);
+    float yr = y / (float)(pixels - 2);
+    float lon = circlePadding + (Mathf.PI - 2 * circlePadding) * xr;
+    float lat = circlePadding + (Mathf.PI - 2 * circlePadding) * yr - (Mathf.PI / 2);
+    float radius = size / 2f;
+    float xp = radius * Mathf.Cos(lat) * Mathf.Cos(lon + Mathf.PI);
+    float yp = radius * Mathf.Cos(lat) * Mathf.Sin(lon);
+    float zp = radius * Mathf.Sin(lat);
+    return new Vector3(xp, yp, zp);
   }
 
   void CreateGrid() {
@@ -79,7 +91,7 @@ public class Map : MonoBehaviour {
 
   void SetupCamera() {
     var cam = Camera.main.transform;
-    cam.position = new Vector3(0, size, 0);
-    cam.LookAt(Vector3.zero);
+    cam.position = new Vector3(0, size + 5, 0);
+    cam.rotation = Quaternion.Euler(90, 0, 0);
   }
 }
