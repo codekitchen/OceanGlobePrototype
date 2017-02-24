@@ -30,8 +30,8 @@ public class WaveSystem {
       float steepness = wave.steepness / (freq * wave.amplitude * waves.Count);
       Vector2 direction = wave.direction;
       offset.x += steepness * wave.amplitude * direction.x * Mathf.Cos(Vector2.Dot(position, freq * direction) + phase * Time.time);
-      offset.z += steepness * wave.amplitude * direction.y * Mathf.Cos(Vector2.Dot(position, freq * direction) + phase * Time.time);
-      offset.y += wave.amplitude * Mathf.Sin(Vector2.Dot(position, freq * direction) + phase * Time.time);
+      offset.y += steepness * wave.amplitude * direction.y * Mathf.Cos(Vector2.Dot(position, freq * direction) + phase * Time.time);
+      offset.z += wave.amplitude * Mathf.Sin(Vector2.Dot(position, freq * direction) + phase * Time.time);
     }
     return offset;
   }

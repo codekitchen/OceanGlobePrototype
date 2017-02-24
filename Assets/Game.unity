@@ -18,8 +18,8 @@ RenderSettings:
   m_FogColor: {r: 0.29803923, g: 0.1882353, b: 0.2627451, a: 0}
   m_FogMode: 1
   m_FogDensity: 0.01
-  m_LinearFogStart: 26
-  m_LinearFogEnd: 30
+  m_LinearFogStart: 25
+  m_LinearFogEnd: 29
   m_AmbientSkyColor: {r: 0.89705884, g: 0.89705884, b: 0.89705884, a: 1}
   m_AmbientEquatorColor: {r: 0.114, g: 0.125, b: 0.133, a: 1}
   m_AmbientGroundColor: {r: 0.047, g: 0.043, b: 0.035, a: 1}
@@ -130,6 +130,11 @@ Prefab:
       propertyPath: m_RootOrder
       value: 3
       objectReference: {fileID: 0}
+    - target: {fileID: 114110399940970288, guid: e27aa814437d04f1cb68d679e3c41b66,
+        type: 2}
+      propertyPath: map
+      value: 
+      objectReference: {fileID: 945701856}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: e27aa814437d04f1cb68d679e3c41b66, type: 2}
   m_IsPrefabParent: 0
@@ -160,6 +165,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 58ed55d6edd27449a942922fa8d84259, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  allowedOffset: 2
   size: 30
   pixels: 20
   moveSpeed: 6
@@ -344,22 +350,9 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 50, y: -30, z: 0}
---- !u!1 &1954412032 stripped
-GameObject:
-  m_PrefabParentObject: {fileID: 1416225282665674, guid: e27aa814437d04f1cb68d679e3c41b66,
+--- !u!114 &1954412033 stripped
+MonoBehaviour:
+  m_PrefabParentObject: {fileID: 114110399940970288, guid: e27aa814437d04f1cb68d679e3c41b66,
     type: 2}
   m_PrefabInternal: {fileID: 568964855}
---- !u!114 &1954412033
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 1954412032}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 66ebda64cb64648a3b9142238b0d702e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  map: {fileID: 945701856}
-  mapPos: {x: 0, y: 0}
-  moveSpeed: 4

@@ -13,7 +13,15 @@ public class Map : MonoBehaviour {
   public Transform pixelPrefab;
 
   Transform gridObject;
-  Transform[,] grid;
+  Transform[] grid;
+  Transform this[int x, int y] {
+    get {
+      return grid[y * pixels + x];
+    }
+    set {
+      grid[y * pixels + x] = value;
+    }
+  }
 
   public PlayerControls boat;
 
@@ -28,7 +36,7 @@ public class Map : MonoBehaviour {
 
   public bool CanEnter(Vector2 mapPos) {
     Vector2 intPos = new Vector2(Mathf.Floor(mapPos.x), Mathf.Floor(mapPos.y));
-    Tile tile = tileType(mapPos);
+    Tile tile = tileType(intPos);
     return tile == Tile.Water;
   }
 
@@ -36,29 +44,36 @@ public class Map : MonoBehaviour {
   /// Update is called every frame, if the MonoBehaviour is enabled.
   /// </summary>
   void Update() {
-    Vector3 offset = -(new Vector3(position.x - Mathf.Floor(position.x), 0, position.y - Mathf.Floor(position.y)));
+    Vector3 offset = -(new Vector3(position.x - Mathf.Floor(position.x), position.y - Mathf.Floor(position.y), 0));
     for (int y = 0; y < pixels; ++y) {
       for (int x = 0; x < pixels; ++x) {
-        var pixel = grid[y, x];
-        Vector3 waveMotion = Vector3.zero;
+        var pixel = this[x, y];
+        Vector3 tileOffset = offset;
         Tile tile = tileType(gridToMap(new Vector2(x, y)));
         pixel.GetChild(0).gameObject.SetActive(tile == Tile.Water);
         pixel.GetChild(1).gameObject.SetActive(tile == Tile.Ground);
 
         if (tile == Tile.Water)
-          waveMotion = waves.WaveOffset(gridToMap(new Vector2(x, y)));
+          tileOffset += waves.WaveOffset(gridToMap(new Vector2(x, y)));
+        else if (tile == Tile.Ground)
+          tileOffset.z += .25f;
 
-        pixel.position = BasePos(x + offset.x + waveMotion.x, y + offset.z + waveMotion.z, waveMotion.y);
+        pixel.position = BasePos(x + tileOffset.x, y + tileOffset.y, tileOffset.z);
         pixel.LookAt(pixel.position * 2, Vector3.right);
         pixel.Rotate(Vector3.right, 90);
+
+				if (gridToMap(new Vector2(x, y)) == Vector2.zero)
+          pixel.gameObject.SetActive(false);
+					else
+          pixel.gameObject.SetActive(true);
       }
     }
 
     {
-      Vector3 waveMotion = waves.WaveOffset(boat.mapPos);
       Vector2 pos = mapToGrid(boat.mapPos);
       var bt = boat.transform;
-      bt.position = BasePos(pos.x + offset.x + waveMotion.x, pos.y + offset.z + waveMotion.z, waveMotion.y);
+      var boatOffset = offset + waves.WaveOffset(boat.mapPos);
+      bt.position = BasePos(pos.x + boatOffset.x, pos.y + boatOffset.y, boatOffset.z);
       bt.LookAt(bt.position * 2, Vector3.right);
       bt.Rotate(Vector3.right, 90);
       if (boat.mapPos.x - position.x > allowedOffset) {
@@ -157,13 +172,13 @@ public class Map : MonoBehaviour {
     gridObject = new GameObject("Grid").transform;
     gridObject.SetParent(transform);
 
-    grid = new Transform[pixels, pixels];
+    grid = new Transform[pixels * pixels];
 
     for (int y = 0; y < pixels; ++y) {
       for (int x = 0; x < pixels; ++x) {
         var pos = BasePos(x, y);
         var pixel = Instantiate(pixelPrefab, pos, Quaternion.identity, gridObject);
-        grid[y, x] = pixel;
+        this[x, y] = pixel;
       }
     }
   }
