@@ -35,9 +35,13 @@ public class Map : MonoBehaviour {
   }
 
   public bool CanEnter(Vector2 mapPos) {
-    Vector2 intPos = new Vector2(Mathf.Floor(mapPos.x), Mathf.Floor(mapPos.y));
+  Vector2 intPos = new Vector2(Mathf.Round(mapPos.x), Mathf.Round(mapPos.y));
     Tile tile = tileType(intPos);
     return tile == Tile.Water;
+  }
+
+	public bool CanEnter(int x, int y) {
+    return CanEnter(new Vector2(x, y));
   }
 
   /// <summary>
@@ -103,7 +107,7 @@ public class Map : MonoBehaviour {
     float xc = xOrg + worldPos.x / (float)worldWidth * scale;
     float yc = yOrg + worldPos.y / (float)worldHeight * scale;
     float sample = OctavePerlin(xc, yc);
-    if (sample < .65)
+    if (sample < .55)
       return Tile.Water;
     return Tile.Ground;
   }
