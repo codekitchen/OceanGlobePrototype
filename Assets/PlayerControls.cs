@@ -15,32 +15,34 @@ public class PlayerControls : MonoBehaviour {
   /// </summary>
   void Update() {
     Vector2 newPos = mapPos;
-		float nxr = xr + Input.GetAxisRaw("Horizontal") * moveSpeed * Time.deltaTime;
-		if (!map.CanEnter(x+1, y) && nxr >= .4f) {
+    float nxr = xr + Input.GetAxisRaw("Horizontal") * moveSpeed * Time.deltaTime;
+    if (!map.CanEnter(x + 1, y) && nxr >= .4f) {
       nxr = .4f;
-    } else if (!map.CanEnter(x-1, y) && nxr <= -.4f) {
+    }
+    else if (!map.CanEnter(x - 1, y) && nxr <= -.4f) {
       nxr = -.4f;
     }
-		float nyr = yr + Input.GetAxisRaw("Vertical") * moveSpeed * Time.deltaTime;
-		if (!map.CanEnter(x, y+1) && nyr >= .4f) {
+    float nyr = yr + Input.GetAxisRaw("Vertical") * moveSpeed * Time.deltaTime;
+    if (!map.CanEnter(x, y + 1) && nyr >= .4f) {
       nyr = .4f;
-    } else if (!map.CanEnter(x, y-1) && nyr <= -.4f) {
+    }
+    else if (!map.CanEnter(x, y - 1) && nyr <= -.4f) {
       nyr = -.4f;
     }
 
-		while (nxr > .5f) {
+    while (nxr > .5f) {
       nxr--;
       newPos.x++;
     }
-		while (nxr < -.5f) {
+    while (nxr < -.5f) {
       nxr++;
       newPos.x--;
     }
-		while (nyr > .5f) {
+    while (nyr > .5f) {
       nyr--;
       newPos.y++;
     }
-		while (nyr < -.5f) {
+    while (nyr < -.5f) {
       nyr++;
       newPos.y--;
     }

@@ -35,12 +35,12 @@ public class Map : MonoBehaviour {
   }
 
   public bool CanEnter(Vector2 mapPos) {
-  Vector2 intPos = new Vector2(Mathf.Round(mapPos.x), Mathf.Round(mapPos.y));
+    Vector2 intPos = new Vector2(Mathf.Round(mapPos.x), Mathf.Round(mapPos.y));
     Tile tile = tileType(intPos);
     return tile == Tile.Water;
   }
 
-	public bool CanEnter(int x, int y) {
+  public bool CanEnter(int x, int y) {
     return CanEnter(new Vector2(x, y));
   }
 
@@ -152,7 +152,7 @@ public class Map : MonoBehaviour {
 
   float circlePadding = Mathf.PI / 7;
 
-	void Position(Transform obj, Vector3 gridCords, Vector3 offset) {
+  void Position(Transform obj, Vector3 gridCords, Vector3 offset) {
     gridCords += offset;
     // we extend the range on the right/top a bit, to compensate for the fact that
     // the "pixels" disappear sooner on that side as they scroll.
@@ -165,11 +165,11 @@ public class Map : MonoBehaviour {
     float yp = radius * Mathf.Cos(lat) * Mathf.Sin(lon);
     float zp = radius * Mathf.Sin(lat);
     obj.position = new Vector3(xp, yp, zp);
-		// eesh
-		// This is to rotate the sprite so that "up" is directly out of the circle (perpendicular to the surface),
-		// but "right" is always aligned with the positive x axis (but still tangent to the circle's surface), so
-		// that non-round sprites aren't pointing in random directions.
-		// my trig-fu is weak, this took like 30 minutes.
+    // eesh
+    // This is to rotate the sprite so that "up" is directly out of the circle (perpendicular to the surface),
+    // but "right" is always aligned with the positive x axis (but still tangent to the circle's surface), so
+    // that non-round sprites aren't pointing in random directions.
+    // my trig-fu is weak, this took like 30 minutes.
     var norm = obj.position.normalized;
     var localRight = Quaternion.Euler(0, 0, Mathf.Rad2Deg * (Mathf.PI / 2 - lon)) * Vector3.right + obj.position;
     obj.LookAt(localRight, obj.position + norm);
